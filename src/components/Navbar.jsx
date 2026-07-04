@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Search, Heart, ShoppingCart, ShieldCheck,
   Menu, X, Smartphone, Laptop, Tv, Gamepad2, Home as HomeIcon, LayoutGrid,
-  ChevronDown
+  ChevronDown, User
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { formatCurrency } from '../pages/Home';
@@ -130,6 +130,10 @@ export default function Navbar() {
               </Link>
             )}
 
+            <Link to={user ? "/profile" : "/login"} className="mc2-icon-btn" aria-label="User Account">
+              <User size={20} />
+            </Link>
+
             {/* Cart pill */}
             <Link to="/cart" className="mc2-cart-pill" aria-label={`Cart (${cartCount} items)`}>
               <ShoppingCart size={17} />
@@ -221,6 +225,10 @@ export default function Navbar() {
                 <ShieldCheck size={16} /> Admin Panel
               </Link>
             )}
+
+            <Link to={user ? "/profile" : "/login"} className="mc2-drawer-link" onClick={() => setDrawerOpen(false)}>
+              <User size={16} /> {user ? "My Account" : "Login / Register"}
+            </Link>
           </nav>
         </div>
       </aside>

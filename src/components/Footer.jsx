@@ -27,8 +27,8 @@ export default function Footer() {
               <div className="ref-footer-contact-row">
                 <PhoneCall size={15} />
                 <div>
-                  <div className="ref-footer-contact-label">Customer Service</div>
-                  <a href="tel:09032272294" className="ref-footer-contact-value">09032272294</a>
+                  <div className="ref-footer-contact-label">Customer Service & WhatsApp</div>
+                  <a href="tel:09035636810" className="ref-footer-contact-value">09035636810</a>
                   <div className="ref-footer-contact-hours">Mon – Sat: 8am – 8pm</div>
                 </div>
               </div>
@@ -36,21 +36,14 @@ export default function Footer() {
                 <Mail size={15} />
                 <div>
                   <div className="ref-footer-contact-label">Email</div>
-                  <a href="mailto:support@macchristar.ng" className="ref-footer-contact-value">support@macchristar.ng</a>
+                  <a href="mailto:macchristar@gmail.com" className="ref-footer-contact-value">macchristar@gmail.com</a>
                 </div>
               </div>
               <div className="ref-footer-contact-row">
                 <MapPin size={15} />
                 <div>
-                  <div className="ref-footer-contact-label">Head Office</div>
-                  <div className="ref-footer-contact-value" style={{ fontSize: '12px' }}>A7 Adeti Street, FABTECH Plaza, Ilesa, Osun State</div>
-                </div>
-              </div>
-              <div className="ref-footer-contact-row">
-                <MapPin size={15} />
-                <div>
-                  <div className="ref-footer-contact-label">Branch — Lagos</div>
-                  <div className="ref-footer-contact-value" style={{ fontSize: '12px' }}>Shop 424 Upstairs, Japan Line, Alaba International Market, Ojo, Lagos</div>
+                  <div className="ref-footer-contact-label">Address</div>
+                  <div className="ref-footer-contact-value" style={{ fontSize: '12px' }}>Mac-Christar Limited plaza/complex, okearo busstop, ogun state</div>
                 </div>
               </div>
             </div>

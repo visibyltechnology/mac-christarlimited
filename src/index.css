@@ -3384,10 +3384,14 @@ body {
   .section-title { font-size: 20px; }
 }
 
-/* ── Extra small (≤ 480px): 1-col product grid ── */
+/* ── Extra small (≤ 480px): 2-col product grid ── */
 @media (max-width: 480px) {
   .product-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  .product-grid .ref-product-card {
+    width: 100% !important;
   }
   .mc-navbar { gap: 8px; padding: 8px 12px; }
 }

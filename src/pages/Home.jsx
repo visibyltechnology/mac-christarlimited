@@ -9,8 +9,6 @@ import {
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import SEO from '../components/SEO';
-import { db } from '../firebase';
-import { doc, getDoc } from 'firebase/firestore';
 
 export const formatCurrency = (amount) => '₦' + (amount || 0).toLocaleString('en-NG');
 
@@ -127,9 +125,7 @@ export default function Home() {
 
   /* ── FETCH DATA ── */
   useEffect(() => {
-    getDoc(doc(db, 'settings', 'site_settings'))
-      .then(snap => { if (snap.exists() && snap.data().heroSlides) setHeroSlides(snap.data().heroSlides); })
-      .catch(() => {});
+    // Firebase is disabled; using default heroSlides
   }, []);
 
   useEffect(() => {

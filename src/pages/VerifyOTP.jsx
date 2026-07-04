@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShieldCheck, KeyRound, Zap, ArrowRight, Loader2 } from 'lucide-react';
-import { auth, db } from '../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { useApp } from '../context/AppContext';
 
 export default function VerifyOTP() {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const { register } = useApp();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -63,40 +62,27 @@ export default function VerifyOTP() {
     setLoading(true);
     
     try {
-      // 1. Create Firebase Auth user
-      const userCredential = await createUserWithEmailAndPassword(
-        auth, 
-        pendingData.email, 
-        pendingData.password
-      );
+      // Create mock user
+      await register(pendingData.firstName + " " + pendingData.lastName, pendingData.email, pendingData.password);
       
-      const user = userCredential.user;
-      
-      // 2. Create user document in Firestore
-      await setDoc(doc(db, 'users', user.uid), {
-        firstName: pendingData.firstName,
-        lastName: pendingData.lastName,
-        phone: pendingData.phone,
-        email: pendingData.email,
-        isAdmin: false, // Default role
-        createdAt: new Date().toISOString()
-      });
-      
-      // 3. Clear session storage
+      // Clear session data
       sessionStorage.removeItem('pendingRegistration');
       sessionStorage.removeItem('registrationOTP');
       
       setSuccess(true);
+      setTimeout(() => {
+        navigate('/'); // AppContext will handle user state
+      }, 2000);
+      
     } catch (err) {
       console.error(err);
       setError(err.message || 'Failed to create account.');
-    } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px', background: 'radial-gradient(ellipse at top, #1a0a00 0%, var(--black) 60%)' }}>
+    <main style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '120px 20px 40px', background: 'radial-gradient(ellipse at top, #1a0a00 0%, var(--black) 60%)' }}>
       <div style={{ width: '100%', maxWidth: '440px' }}>
 
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>

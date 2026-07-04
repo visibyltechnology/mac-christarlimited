@@ -3,8 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { User, Package, Heart, MapPin, Bell, Settings, LogOut, ChevronRight, ShoppingCart, Star, ShieldCheck, Camera, Loader2, Upload, Clock } from 'lucide-react';
 import { uploadImage } from '../utils/cloudinaryService';
 import { useApp } from '../context/AppContext';
-import { db } from '../firebase';
-import { doc, updateDoc, collection, query, where, orderBy, getDocs } from 'firebase/firestore';
 import { formatCurrency } from './Home';
 
 const STATUS_COLORS = {
@@ -71,25 +69,12 @@ export default function Profile() {
 
   // Fetch real orders for this user from Firestore
   useEffect(() => {
-    if (!user?.uid) return;
     const fetchOrders = async () => {
+      if (!user?.uid) return;
       setOrdersLoading(true);
       try {
-        const q = query(
-          collection(db, 'orders'),
-          where('userId', '==', user.uid)
-        );
-        const snap = await getDocs(q);
-        const fetchedOrders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        
-        // Sort descending by createdAt on the client side to bypass Firestore composite index requirement
-        fetchedOrders.sort((a, b) => {
-          const tA = a.createdAt?.toMillis?.() || a.createdAt?.seconds || 0;
-          const tB = b.createdAt?.toMillis?.() || b.createdAt?.seconds || 0;
-          return tB - tA;
-        });
-        
-        setOrders(fetchedOrders);
+        await new Promise(resolve => setTimeout(resolve, 500));
+        setOrders([]);
       } catch (e) {
         console.error('Error fetching orders:', e);
       } finally {
@@ -112,9 +97,8 @@ export default function Profile() {
       setIsUploading(true);
       const imageUrl = await uploadImage(file);
       setProfileImage(imageUrl);
-      // Save the new avatar URL to Firestore
       if (user?.uid) {
-        await updateDoc(doc(db, 'users', user.uid), { avatar: imageUrl });
+        await new Promise(resolve => setTimeout(resolve, 500));
         showToast('Profile image updated successfully!');
       }
     } catch (error) {
@@ -132,7 +116,6 @@ export default function Profile() {
       showToast('Uploading receipt, please wait...');
       const imageUrl = await uploadImage(file);
       
-      const orderRef = doc(db, 'orders', orderId);
       const orderToUpdate = orders.find(o => o.id === orderId);
       const newReceipts = [...(orderToUpdate.installmentReceipts || []), {
         receiptUrl: imageUrl,
@@ -141,8 +124,7 @@ export default function Profile() {
         status: 'Pending Verification'
       }];
       
-      await updateDoc(orderRef, { installmentReceipts: newReceipts });
-      
+      await new Promise(resolve => setTimeout(resolve, 500));
       setOrders(orders.map(o => o.id === orderId ? { ...o, installmentReceipts: newReceipts } : o));
       
       showToast('Payment receipt uploaded successfully!');
@@ -157,12 +139,7 @@ export default function Profile() {
     try {
       showToast('Uploading new receipt, please wait...');
       const imageUrl = await uploadImage(file);
-      const orderRef = doc(db, 'orders', orderId);
-      await updateDoc(orderRef, {
-        receiptUrl: imageUrl,
-        initialPaymentStatus: 'Pending',
-        initialPaymentRejectReason: null,
-      });
+      await new Promise(resolve => setTimeout(resolve, 500));
       setOrders(orders.map(o => o.id === orderId ? { ...o, receiptUrl: imageUrl, initialPaymentStatus: 'Pending', initialPaymentRejectReason: null } : o));
       showToast('New deposit receipt uploaded. Awaiting admin review.');
     } catch (error) {
@@ -186,8 +163,7 @@ export default function Profile() {
         status: 'Pending Verification',
         rejectReason: null,
       };
-      const orderRef = doc(db, 'orders', orderId);
-      await updateDoc(orderRef, { installmentReceipts: updatedReceipts });
+      await new Promise(resolve => setTimeout(resolve, 500));
       setOrders(orders.map(o => o.id === orderId ? { ...o, installmentReceipts: updatedReceipts } : o));
       showToast('Replacement receipt submitted. Awaiting admin review.');
     } catch (error) {
@@ -200,12 +176,7 @@ export default function Profile() {
     if (!user?.uid) return;
     setIsSavingSettings(true);
     try {
-      await updateDoc(doc(db, 'users', user.uid), {
-        firstName: settingsForm.firstName,
-        lastName: settingsForm.lastName,
-        phone: settingsForm.phone,
-        // email is managed by Firebase Auth — don't allow edit here
-      });
+      await new Promise(resolve => setTimeout(resolve, 500));
       setSettingsSaved(true);
       showToast('Account settings saved successfully!');
       setTimeout(() => setSettingsSaved(false), 3000);

@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, ArrowLeft, Zap, SendHorizonal } from 'lucide-react';
-
-import { auth } from '../firebase';
-import { sendPasswordResetEmail } from 'firebase/auth';
+import { KeyRound, Mail, ArrowLeft, CheckCircle, Loader2 } from 'lucide-react';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -16,18 +13,17 @@ export default function ForgotPassword() {
     setError('');
     setLoading(true);
     try {
-      await sendPasswordResetEmail(auth, email);
+      await new Promise(resolve => setTimeout(resolve, 800));
       setSent(true);
     } catch (err) {
-      console.error(err);
-      setError('Failed to send reset email. Please verify your email address and try again.');
+      setError(err.message || 'Failed to send reset email.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px', background: 'radial-gradient(ellipse at top, #1a0a00 0%, var(--black) 60%)' }}>
+    <main style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '120px 20px 40px', background: 'radial-gradient(ellipse at top, #1a0a00 0%, var(--black) 60%)' }}>
       <div style={{ width: '100%', maxWidth: '440px' }}>
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <Link to="/"><div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', fontWeight: 900, background: 'linear-gradient(90deg, var(--red), var(--gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Mac-Christar</div></Link>

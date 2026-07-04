@@ -69,7 +69,7 @@ export default function Register() {
   const labelStyle = { display: 'block', fontSize: '12px', fontWeight: 700, color: 'var(--gray-1)', textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: '8px' };
 
   return (
-    <main style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px', background: 'radial-gradient(ellipse at top, #1a0a00 0%, var(--black) 60%)' }}>
+    <main style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '120px 20px 40px', background: 'radial-gradient(ellipse at top, #1a0a00 0%, var(--black) 60%)' }}>
       <div style={{ width: '100%', maxWidth: '520px' }}>
 
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>

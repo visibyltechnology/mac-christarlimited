@@ -3,8 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CreditCard, MapPin, Truck, ShieldCheck, ChevronRight, CheckCircle, Zap, Upload, AlertCircle, Loader2, X } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { formatCurrency } from './Home';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../firebase';
 import { uploadImage } from '../utils/cloudinaryService';
 
 const steps = ['Delivery', 'Payment', 'Review'];
@@ -127,7 +125,9 @@ export default function Checkout() {
         receiptUrl: receiptUrl,
         createdAt: new Date() };
 
-      await addDoc(collection(db, 'orders'), orderData);
+      // Mock database save
+      await new Promise(resolve => setTimeout(resolve, 800));
+      console.log("Mock Order Saved:", orderData);
       
       setFinalTotal(grandTotal);
       clearCart();

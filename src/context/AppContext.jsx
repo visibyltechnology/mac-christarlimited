@@ -1,7 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { auth, db } from '../firebase';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
 
 const AppContext = createContext();
@@ -44,44 +41,43 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem('wishlist', JSON.stringify(wishlist));
   }, [wishlist]);
 
-  // Auth Listener
+  // Mock Auth Listener
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        try {
-          // Fetch additional user metadata (like isAdmin) from Firestore
-          const docRef = doc(db, 'users', firebaseUser.uid);
-          const docSnap = await getDoc(docRef);
-          
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            // Safeguard: Give admin access to owner emails if the database flag is missing
-            const isOwner = firebaseUser.email === 'hassan@email.com' || firebaseUser.email?.includes('admin');
-            setUser({ uid: firebaseUser.uid, ...firebaseUser, ...data, isAdmin: data.isAdmin === true || isOwner });
-          } else {
-            const isOwner = firebaseUser.email === 'hassan@email.com' || firebaseUser.email?.includes('admin');
-            setUser({ uid: firebaseUser.uid, ...firebaseUser, isAdmin: isOwner });
-          }
-        } catch (error) {
-          console.error("Error fetching user data from Firestore", error);
-          setUser({ uid: firebaseUser.uid, ...firebaseUser });
-        }
-      } else {
-        setUser(null);
-      }
+    // Simulate loading
+    setTimeout(() => {
+      // For now, no user is logged in by default
+      setUser(null);
       setAuthLoading(false);
-    });
-
-    return () => unsubscribe();
+    }, 500);
   }, []);
 
+  const login = async (email, password) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (email === 'admin@macchristar.ng') {
+          setUser({ uid: 'mock-admin-1', email, name: 'Admin User', isAdmin: true });
+          resolve();
+        } else if (password === 'password') {
+          setUser({ uid: 'mock-user-1', email, name: 'Test User', isAdmin: false });
+          resolve();
+        } else {
+          reject(new Error("Invalid credentials. Try 'password'."));
+        }
+      }, 800);
+    });
+  };
+
+  const register = async (name, email, password) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        setUser({ uid: 'mock-user-' + Date.now(), email, name, isAdmin: false });
+        resolve();
+      }, 800);
+    });
+  };
+
   const logout = async () => {
-    try {
-      await signOut(auth);
-      setUser(null);
-    } catch (error) {
-      console.error("Error signing out", error);
-    }
+    setUser(null);
   };
 
   // Cart Functions
@@ -132,6 +128,8 @@ export const AppProvider = ({ children }) => {
   const contextValue = {
     user,
     authLoading,
+    login,
+    register,
     logout,
     cart,
     addToCart,

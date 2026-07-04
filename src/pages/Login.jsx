@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Eye, EyeOff, LogIn, ShieldCheck, Lock, Zap, Loader2 } from 'lucide-react';
-import { auth } from '../firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useApp } from '../context/AppContext';
 
 export default function Login() {
@@ -12,7 +10,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
-  const { user } = useApp();
+  const { user, login } = useApp();
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -36,23 +34,19 @@ export default function Login() {
     setLoading(true);
     
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await login(email, password);
       // Set flag to trigger navigation once AppContext has fetched user document
       setIsLoggingIn(true);
     } catch (err) {
       console.error(err);
-      if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
-        setError('Invalid email or password. Please try again.');
-      } else {
-        setError(err.message || 'Failed to sign in.');
-      }
+      setError(err.message || 'Failed to sign in.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px', background: 'radial-gradient(ellipse at top, #1a0a00 0%, var(--black) 60%)' }}>
+    <main style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '120px 20px 40px', background: 'radial-gradient(ellipse at top, #1a0a00 0%, var(--black) 60%)' }}>
       <div style={{ width: '100%', maxWidth: '460px' }}>
 
         {/* Logo */}
