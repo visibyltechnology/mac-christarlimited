@@ -199,38 +199,91 @@ export default function Home() {
         url="/"
       />
 
-      <div className="ref-container">
-        <section className="ref-hero-bento-section" aria-label="Hero Bento Grid">
-          {/* Main Feature */}
-          <div className="ref-bento-main">
-            <div className="ref-bento-content">
-              <span className="ref-bento-badge">Premium Tech Shop</span>
-              <h1>Next-Gen Electronics.<br/><span>Pay On Your Terms.</span></h1>
-              <p>Experience the future of tech. Choose flexible daily, weekly, or monthly installments, or instant BNPL.</p>
-              <Link to="/shop" className="ref-btn ref-btn-gold">Shop Latest <ArrowRight size={16}/></Link>
+      <section className="mc2-hero" aria-label="Hero">
+        {/* Animated background blobs */}
+        <div className="mc2-hero-blob mc2-hero-blob-1" aria-hidden="true" />
+        <div className="mc2-hero-blob mc2-hero-blob-2" aria-hidden="true" />
+        <div className="mc2-hero-blob mc2-hero-blob-3" aria-hidden="true" />
+        <div className="mc2-hero-grid-overlay" aria-hidden="true" />
+
+        <div className="mc2-hero-inner">
+          {/* LEFT — Text Content */}
+          <div className="mc2-hero-content">
+            <div className="mc2-hero-eyebrow">
+              <span className="mc2-hero-star">★</span>
+              <span>NIGERIA'S #1 TECH STORE</span>
             </div>
-            <img src={slide.image || "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?q=80&w=2070&auto=format&fit=crop"} alt="Premium Tech" className="ref-bento-main-img" />
+
+            <h1 className="mc2-hero-headline">
+              Premium<br />
+              Electronics.<br />
+              <span className="mc2-hero-headline-accent">Yours, Instantly.</span>
+            </h1>
+
+            <p className="mc2-hero-subtext">
+              Flexible installments. BNPL via Klump.<br className="mc2-hero-br" />
+              Fast nationwide delivery.
+            </p>
+
+            <div className="mc2-hero-ctas">
+              <Link to="/shop" className="mc2-hero-btn-primary">
+                Shop Now <ArrowRight size={16} />
+              </Link>
+              <Link to="/shop?sort=featured" className="mc2-hero-btn-ghost">
+                View Deals
+              </Link>
+            </div>
+
+            <div className="mc2-hero-trust">
+              <div className="mc2-trust-chip">
+                <ShieldCheck size={14} />
+                <span>12K+ Orders</span>
+              </div>
+              <div className="mc2-trust-chip">
+                <Package size={14} />
+                <span>100% Genuine</span>
+              </div>
+              <div className="mc2-trust-chip">
+                <Zap size={14} />
+                <span>BNPL Available</span>
+              </div>
+            </div>
           </div>
 
-          {/* Side Box 1: BNPL Promo */}
-          <Link to="/shop" className="ref-bento-small ref-bento-bnpl">
-            <div className="ref-bento-small-text">
-              <h3>Buy Now,<br/>Pay Later</h3>
-              <p>Instant approval with Klump</p>
+          {/* RIGHT — Product Visual */}
+          <div className="mc2-hero-visual">
+            <div className="mc2-hero-glow-ring" aria-hidden="true" />
+            <div className="mc2-hero-img-wrap">
+              <img
+                src={slide.image || 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?q=80&w=1000&auto=format&fit=crop'}
+                alt="Premium Tech"
+                className="mc2-hero-product-img"
+              />
             </div>
-            <div className="ref-bento-icon-bg"><Wallet size={36}/></div>
-          </Link>
 
-          {/* Side Box 2: Flash Sale Promo */}
-          <Link to="/shop?sort=featured" className="ref-bento-small ref-bento-flash">
-            <div className="ref-bento-small-text">
-              <h3>Flash Sale</h3>
-              <p>Up to 40% Off Laptops</p>
+            {/* Floating info cards */}
+            <div className="mc2-hero-card mc2-hero-card-1">
+              <Zap size={16} className="mc2-hero-card-icon" />
+              <div>
+                <div className="mc2-hero-card-title">Flash Sale</div>
+                <div className="mc2-hero-card-sub">Up to 40% off</div>
+              </div>
             </div>
-            <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1000&auto=format&fit=crop" className="ref-bento-small-img" alt="Flash Sale" />
-          </Link>
-        </section>
-      </div>
+            <div className="mc2-hero-card mc2-hero-card-2">
+              <Truck size={16} className="mc2-hero-card-icon" />
+              <div>
+                <div className="mc2-hero-card-title">Free Delivery</div>
+                <div className="mc2-hero-card-sub">Orders over ₦50k</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="mc2-hero-scroll-indicator" aria-hidden="true">
+          <div className="mc2-scroll-dot" />
+        </div>
+      </section>
 
       {/* ══════════════════════════════════════════
           FEATURED BRANDS BAR
