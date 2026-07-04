@@ -253,11 +253,19 @@ export default function Home() {
           {/* RIGHT — Product Visual */}
           <div className="mc2-hero-visual">
             <div className="mc2-hero-glow-ring" aria-hidden="true" />
+            <div className="mc2-hero-glow-ring mc2-hero-glow-ring-2" aria-hidden="true" />
             <div className="mc2-hero-img-wrap">
               <img
-                src={slide.image || 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?q=80&w=1000&auto=format&fit=crop'}
+                src={slide.image || 'https://images.unsplash.com/photo-1546054454-aa26e2b734c7?q=80&w=880&auto=format&fit=crop'}
                 alt="Premium Tech"
                 className="mc2-hero-product-img"
+              />
+            </div>
+            {/* Secondary floating product */}
+            <div className="mc2-hero-secondary-img">
+              <img
+                src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?q=80&w=400&auto=format&fit=crop"
+                alt="Featured Product"
               />
             </div>
 
