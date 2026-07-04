@@ -219,29 +219,25 @@ export default function Home() {
           </ul>
 
           {/* Hero Banner */}
-          <div
-            className="ref-hero-banner"
-            style={slide.image ? { backgroundImage: `url(${slide.image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
-          >
-            <div className="ref-hero-overlay" />
+          <div className="ref-hero-banner">
             <div className="ref-hero-content">
               <p className="ref-hero-eyebrow">Mac-Christar Limited</p>
               <h1 className="ref-hero-h1">
                 {slide.title ? (
                   <>{slide.title.split(' ').slice(0, 3).join(' ')}<br /><span>{slide.title.split(' ').slice(3).join(' ') || 'Pay On Your Terms'}</span></>
                 ) : (
-                  <>Upgrade Your Tech.<br /><span>Pay On Your Terms.</span></>
+                  <>Next-Gen Electronics.<br /><span>Pay On Your Terms.</span></>
                 )}
               </h1>
               <p className="ref-hero-sub">
-                {slide.subtitle || 'Shop top-tier electronics today. Choose flexible daily, weekly, or monthly installments, or get instant approval with Buy Now, Pay Later.'}
+                {slide.subtitle || 'Experience the future of tech. Shop premium smartphones, laptops, and smart home devices. Choose flexible daily, weekly, or monthly installments.'}
               </p>
               <div className="ref-hero-ctas">
                 <Link to={slide.link || '/shop'} className="ref-btn ref-btn-gold">
                   Shop Latest Deals <ArrowRight size={18} />
                 </Link>
                 <Link to="/shop" className="ref-btn ref-btn-outline">
-                  Browse All
+                  Browse Catalog
                 </Link>
               </div>
               {/* Slide dots */}
@@ -252,6 +248,14 @@ export default function Home() {
                   ))}
                 </div>
               )}
+            </div>
+            <div className="ref-hero-image-wrap">
+              <img 
+                src={slide.image || "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?q=80&w=2070&auto=format&fit=crop"} 
+                alt="Premium Electronics" 
+                className="ref-hero-img-floating" 
+                onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?q=80&w=1000&auto=format&fit=crop"; }}
+              />
             </div>
           </div>
         </section>

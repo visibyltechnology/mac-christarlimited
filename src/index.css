@@ -3711,29 +3711,50 @@ a { text-decoration: none; color: inherit; }
 
 /* Hero Banner */
 .ref-hero-banner {
-  background: linear-gradient(to right, #000, #1a0000);
-  border-radius: 8px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  border-radius: 12px;
   display: flex;
   align-items: center;
-  padding: 52px 56px;
-  color: #fff;
+  justify-content: space-between;
+  padding: 40px 56px;
   position: relative;
   overflow: hidden;
-  min-height: 420px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-}
-
-.ref-hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(179,0,0,0.3) 100%);
-  pointer-events: none;
+  min-height: 460px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.2);
 }
 
 .ref-hero-content {
   position: relative;
   z-index: 2;
-  max-width: 520px;
+  max-width: 500px;
+  flex-shrink: 0;
+}
+
+.ref-hero-image-wrap {
+  position: relative;
+  z-index: 2;
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.ref-hero-img-floating {
+  max-width: 120%;
+  max-height: 400px;
+  object-fit: contain;
+  animation: float-hero 6s ease-in-out infinite;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+}
+
+@keyframes float-hero {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
 }
 
 .ref-hero-eyebrow {
@@ -4633,8 +4654,31 @@ a.ref-footer-contact-value:hover { color: var(--brand-gold, #D4AF37); }
   .mc-nav-action-item { padding: 6px 8px; }
   .mc-cat-nav { display: none; }
 
-  .ref-hero-banner { padding: 36px 28px; min-height: 300px; }
+  .ref-hero-banner {
+    flex-direction: column-reverse;
+    padding: 32px 24px 40px;
+    text-align: center;
+    gap: 32px;
+    min-height: auto;
+  }
+  .ref-hero-content {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .ref-hero-h1 { font-size: 28px; }
+  .ref-hero-ctas {
+    justify-content: center;
+  }
+  .ref-hero-image-wrap {
+    justify-content: center;
+    width: 100%;
+  }
+  .ref-hero-img-floating {
+    max-width: 90%;
+    max-height: 250px;
+  }
 
   .ref-process-grid { grid-template-columns: 1fr; gap: 20px; }
   .ref-process-section { padding: 32px 24px; }
