@@ -1,8 +1,8 @@
 import emailjs from '@emailjs/browser';
 
-const EMAILJS_SERVICE_ID = 'service_d33crda';
-const EMAILJS_TEMPLATE_ID = 'template_kxd3spd';
-const EMAILJS_PUBLIC_KEY = 'JFTicMJY1P3lms8ir';
+const EMAILJS_SERVICE_ID = 'service_aao52t8';
+const EMAILJS_TEMPLATE_ID = 'template_1at7g98';
+const EMAILJS_PUBLIC_KEY = 'GNPCqkbLD8umUorl3';
 
 /**
  * Sends an OTP email using EmailJS.

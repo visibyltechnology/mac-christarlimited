@@ -2,8 +2,8 @@
  * Service to handle uploading images to Cloudinary via unsigned upload
  */
 
-const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dshrculvx/image/upload';
-const UPLOAD_PRESET = 'electricplug';
+const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/mac-christar/image/upload';
+const UPLOAD_PRESET = 'ukmzdvgi';
 
 /**
  * Uploads an image file to Cloudinary.
