@@ -244,12 +244,21 @@ export default function ProductDetails() {
                   <button onClick={() => setQty(q => Math.min(10, q + 1))}>+</button>
                 </div>
               </div>
-              <button className="pas-add-btn" onClick={() => {
-                const productToAdd = selectedColor ? { ...product, selectedColor } : product;
-                addToCart(productToAdd, qty);
-              }}>
-                <ShoppingCart size={20} /> Add to Cart
-              </button>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <button className="pas-add-btn" onClick={() => {
+                  const productToAdd = selectedColor ? { ...product, selectedColor } : product;
+                  addToCart(productToAdd, qty);
+                }}>
+                  <ShoppingCart size={20} /> Add to Cart
+                </button>
+                <button className="pas-add-btn" style={{ background: 'var(--white)', color: 'var(--black)' }} onClick={() => {
+                  const productToAdd = selectedColor ? { ...product, selectedColor } : product;
+                  addToCart(productToAdd, qty);
+                  navigate('/checkout');
+                }}>
+                  Proceed to Checkout
+                </button>
+              </div>
             </div>
 
             {/* Payment Options Info */}
