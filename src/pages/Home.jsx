@@ -345,6 +345,68 @@ export default function Home() {
       </div>
 
       {/* ══════════════════════════════════════════
+          FEATURED BENTO GRID (Electric Plug style)
+      ══════════════════════════════════════════ */}
+      {data.featured.length > 0 && (
+        <div className="ref-container ref-section" style={{ paddingTop: 0 }}>
+          <div className="ref-section-header">
+            <h2 className="ref-section-title">✦ Featured Products</h2>
+            <Link to="/shop?sort=featured" className="ref-see-all">View All <ArrowRight size={14} /></Link>
+          </div>
+          <div className="ep-bento-grid">
+            {/* Big hero tile — first product */}
+            {data.featured[0] && (
+              <Link to={`/product/${data.featured[0].id}`} className="ep-bento-hero">
+                <div className="ep-bento-img-wrap">
+                  {(data.featured[0].imgUrl || data.featured[0].image) ? (
+                    <img src={data.featured[0].imgUrl || data.featured[0].image} alt={data.featured[0].name} className="ep-bento-img" />
+                  ) : (
+                    <div className="ep-bento-img ep-bento-no-img">📱</div>
+                  )}
+                </div>
+                <div className="ep-bento-info">
+                  <span className="ep-bento-tag">🔥 Top Pick</span>
+                  <h3 className="ep-bento-name">{data.featured[0].name}</h3>
+                  <div className="ep-bento-price">₦{(data.featured[0].price || 0).toLocaleString('en-NG')}</div>
+                  <span className="ep-bento-cta">Shop Now →</span>
+                </div>
+              </Link>
+            )}
+
+            {/* Right column — smaller tiles */}
+            <div className="ep-bento-side">
+              {data.featured.slice(1, 4).map((p, i) => (
+                <Link key={p.id} to={`/product/${p.id}`} className="ep-bento-small">
+                  <div className="ep-bento-small-img">
+                    {(p.imgUrl || p.image) ? (
+                      <img src={p.imgUrl || p.image} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : (
+                      <span style={{ fontSize: '28px' }}>{['💻','📺','🎧'][i]}</span>
+                    )}
+                  </div>
+                  <div className="ep-bento-small-info">
+                    <div className="ep-bento-small-name">{p.name}</div>
+                    <div className="ep-bento-small-price">₦{(p.price || 0).toLocaleString('en-NG')}</div>
+                  </div>
+                  <span className="ep-bento-arrow">→</span>
+                </Link>
+              ))}
+
+              {/* Promo tile */}
+              <div className="ep-bento-promo">
+                <div className="ep-bento-promo-icon">⚡</div>
+                <div>
+                  <div className="ep-bento-promo-title">Pay in Installments</div>
+                  <div className="ep-bento-promo-sub">0% interest for 3 months</div>
+                </div>
+                <Link to="/shop" className="ep-bento-promo-btn">Get Started</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════
           FLASH SALES
       ══════════════════════════════════════════ */}
       {data.flashSale.length > 0 && (
