@@ -24,6 +24,37 @@ const INSTALLMENT_OPTIONS = [
   }))
 ];
 
+let klumpScriptPromise = null;
+function loadKlumpScript() {
+  if (klumpScriptPromise) return klumpScriptPromise;
+  klumpScriptPromise = new Promise((resolve, reject) => {
+    const scriptId = "klump-js-script";
+    if (document.getElementById(scriptId)) {
+      resolve();
+      return;
+    }
+    const script = document.createElement("script");
+    script.id = scriptId;
+    script.src = "https://js.useklump.com/klump.js";
+    script.onload = () => resolve();
+    script.onerror = () => {
+      klumpScriptPromise = null;
+      reject(new Error("Failed to load Klump script"));
+    };
+    document.body.appendChild(script);
+  });
+  return klumpScriptPromise;
+}
+
+function getKlump() {
+  try {
+    return (0, eval)("Klump");
+  } catch (e) {
+    return undefined;
+  }
+}
+
+
 export default function Checkout() {
   const { user, authLoading, cart, cartTotal, clearCart, showToast } = useApp();
   const navigate = useNavigate();
@@ -88,18 +119,70 @@ export default function Checkout() {
       return;
     }
     setError('');
-    submitOrder();
+    
+    if (formData.payMethod === 'klump_bnpl') {
+      handleKlumpPayment();
+    } else {
+      submitOrder();
+    }
   };
 
-  const submitOrder = async () => {
+  const handleKlumpPayment = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      await loadKlumpScript();
+      const KlumpCtor = getKlump();
+      if (!KlumpCtor) throw new Error("Klump payment service unavailable. Check your connection.");
+
+      new KlumpCtor({
+        publicKey: "klp_pk_test_08ba948c602348a09f9f6d924c2292c3f24cc2e7b514412c8c19868305b5820b",
+        data: {
+          amount: subTotal,
+          shipping_fee: 0,
+          currency: "NGN",
+          redirect_url: `${window.location.origin}/profile`,
+          merchant_reference: `klp-${Date.now()}`,
+          meta_data: {
+            customer: formData.fullName || user?.email || "Guest",
+            email: formData.email || user?.email || "",
+          },
+          items: cart.map((i) => ({
+            image_url: i.imgUrl || i.image || i.img || "",
+            item_url: `${window.location.origin}/product/${i.id}`,
+            name: i.name,
+            unit_price: i.price,
+            quantity: i.qty,
+          })),
+        },
+        onSuccess: (data) => {
+          const klumpRef = data?.data?.reference || `klp-${Date.now()}`;
+          submitOrder(klumpRef);
+        },
+        onError: () => {
+          setError("Klump payment failed or was declined. Please try again or use another method.");
+          setLoading(false);
+        },
+        onLoad: () => setLoading(false),
+        onClose: () => setLoading(false),
+      });
+    } catch (err) {
+      setError(err.message || "Failed to load Klump. Please check your connection.");
+      setLoading(false);
+    }
+  };
+
+  const submitOrder = async (klumpRef = null) => {
     setLoading(true);
     setError('');
 
     try {
       let receiptUrl = '';
-      if (receiptFile) {
+      if (receiptFile && formData.payMethod !== 'klump_bnpl') {
         receiptUrl = await uploadImage(receiptFile);
       }
+
+      const isKlump = formData.payMethod === 'klump_bnpl';
 
       const orderData = {
         userId: user?.uid || 'guest',
@@ -114,15 +197,16 @@ export default function Checkout() {
         installmentInterest,
         payMethod: formData.payMethod,
         installmentPlan: formData.payMethod === 'installment' ? formData.installmentPlan : null,
-        depositAmount: formData.payMethod === 'installment' ? depositAmount : null,
+        depositAmount: formData.payMethod === 'installment' ? depositAmount : (isKlump ? Math.floor(subTotal * 0.25) : null),
         recurringAmount: formData.payMethod === 'installment' ? recurringAmount : null,
-        installmentsTotal: formData.payMethod === 'installment' ? activePlan.duration : null,
-        installmentInterval: formData.payMethod === 'installment' ? activePlan.type : null,
-        installmentsPaid: formData.payMethod === 'installment' ? 0 : null,
+        installmentsTotal: formData.payMethod === 'installment' ? activePlan.duration : (isKlump ? 4 : null),
+        installmentInterval: formData.payMethod === 'installment' ? activePlan.type : (isKlump ? 'monthly' : null),
+        installmentsPaid: (formData.payMethod === 'installment' || isKlump) ? 1 : null,
         installmentReceipts: formData.payMethod === 'installment' ? [] : null,
-        status: 'Pending Verification',
-        initialPaymentStatus: 'Pending',
+        status: isKlump ? 'Processing' : 'Pending Verification',
+        initialPaymentStatus: isKlump ? 'Paid' : 'Pending',
         receiptUrl: receiptUrl,
+        klumpReference: klumpRef,
         createdAt: new Date() };
 
       // Mock database save
@@ -215,7 +299,7 @@ export default function Checkout() {
                   {[
                     { id: 'bank_transfer', label: 'Direct Bank Transfer', icon: CreditCard, desc: 'Pay directly to our bank account' },
                     { id: 'installment', label: 'Installment Payment', icon: Truck, desc: 'Pay in small installments' },
-                    { id: 'easybuy', label: 'Easy Buy', icon: ShieldCheck, desc: 'Coming Soon', disabled: true },
+                    { id: 'klump_bnpl', label: 'Klump BNPL', icon: ShieldCheck, desc: 'Buy Now, Pay Later with Klump', disabled: false },
                     ...(user?.isAdmin ? [{ id: 'admin_cash', label: 'Admin POS / Cash', icon: Zap, desc: 'Direct order placement (Admin only)' }] : []),
                   ].map(method => (
                     <div 
@@ -371,6 +455,25 @@ export default function Checkout() {
                     </div>
                   )}
 
+                  {formData.payMethod === 'klump_bnpl' && (
+                    <div style={{ background: 'var(--dark)', border: '1px solid var(--primary)', borderRadius: 'var(--radius-md)', padding: '20px', marginBottom: '8px' }}>
+                      <h4 style={{ fontSize: '15px', fontWeight: 800, color: 'var(--primary)', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <ShieldCheck size={18} /> Buy Now, Pay Later with Klump
+                      </h4>
+                      <p style={{ fontSize: '13px', color: 'var(--gray-1)', marginBottom: '16px' }}>
+                        Pay for your order in easy installments. Klump will handle your repayment schedule, and your order will be processed immediately upon successful initial payment.
+                      </p>
+                      
+                      <div style={{ background: 'var(--black)', padding: '16px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--dark-border)', marginBottom: '16px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ color: 'var(--gray-1)', fontSize: '13px' }}>Order Total</span>
+                          <span style={{ fontWeight: 800, fontSize: '16px', color: 'var(--primary)' }}>{formatCurrency(subTotal)}</span>
+                        </div>
+                      </div>
+                      <p style={{ fontSize: '12px', color: 'var(--gray-2)' }}>No manual receipt upload is required. You will be redirected to Klump to complete your payment.</p>
+                    </div>
+                  )}
+
                   {/* Terms Checkboxes */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '24px', marginBottom: '16px' }}>
                     {/* Terms */}
@@ -417,7 +520,7 @@ export default function Checkout() {
                   <div style={{ display: 'flex', gap: '12px' }}>
                     <button onClick={() => setStep(1)} disabled={loading} style={{ flex: 1, background: 'var(--dark)', border: '1px solid var(--dark-border)',  padding: '14px', borderRadius: 'var(--radius-md)', fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer' }}>Back</button>
                     <button onClick={handlePlaceOrderClick} disabled={loading} style={{ flex: 2, background: 'var(--primary)', color: 'var(--black)', padding: '14px', borderRadius: 'var(--radius-md)', fontWeight: 800, border: 'none', cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 8px 24px var(--primary-glow)' }}>
-                      {loading ? <><Loader2 className="spinner" size={18} /> Processing...</> : <><Zap size={18} /> Place Order — {formatCurrency(grandTotal)}</>}
+                      {loading ? <><Loader2 className="spinner" size={18} /> Processing...</> : <><Zap size={18} /> {formData.payMethod === 'klump_bnpl' ? 'Pay with Klump' : 'Place Order'} — {formatCurrency(formData.payMethod === 'klump_bnpl' ? subTotal : grandTotal)}</>}
                     </button>
                   </div>
                 </div>
