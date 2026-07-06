@@ -4,6 +4,28 @@ import { auth, db } from '../firebase';
 import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
+const getFriendlyErrorMessage = (error) => {
+  const code = error.code || '';
+  if (code.includes('invalid-credential') || code.includes('wrong-password') || code.includes('user-not-found') || code.includes('invalid-login-credentials')) {
+    return 'Invalid email or password. Please try again.';
+  }
+  if (code.includes('email-already-in-use')) {
+    return 'An account with this email address already exists.';
+  }
+  if (code.includes('weak-password')) {
+    return 'Your password is too weak. Please use at least 6 characters.';
+  }
+  if (code.includes('network-request-failed')) {
+    return 'Network error. Please check your internet connection.';
+  }
+  if (code.includes('too-many-requests')) {
+    return 'Too many failed attempts. Please try again later.';
+  }
+  // Fallback to error message, but remove 'Firebase:' prefix if present
+  let msg = error.message || 'An unexpected error occurred. Please try again.';
+  return msg.replace(/^Firebase:\s*/i, '');
+};
+
 const AppContext = createContext();
 
 export const useApp = () => useContext(AppContext);
@@ -74,7 +96,7 @@ export const AppProvider = ({ children }) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      throw new Error(error.message || "Invalid credentials.");
+      throw new Error(getFriendlyErrorMessage(error));
     }
   };
 
@@ -91,7 +113,7 @@ export const AppProvider = ({ children }) => {
         createdAt: new Date().toISOString()
       });
     } catch (error) {
-      throw new Error(error.message || "Registration failed.");
+      throw new Error(getFriendlyErrorMessage(error));
     }
   };
 

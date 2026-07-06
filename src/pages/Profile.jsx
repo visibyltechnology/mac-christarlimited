@@ -408,15 +408,15 @@ export default function Profile() {
                                           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
                                               <span style={{ color: 'var(--gray-1)' }}>Bank Name</span>
-                                              <span style={{ fontWeight: 700, color: 'var(--white)' }}>Wema Bank</span>
+                                              <span style={{ fontWeight: 700, color: 'var(--white)' }}>UBA</span>
                                             </div>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
                                               <span style={{ color: 'var(--gray-1)' }}>Account Name</span>
-                                              <span style={{ fontWeight: 700, color: 'var(--white)' }}>Mac-Christar Limited</span>
+                                              <span style={{ fontWeight: 700, color: 'var(--white)' }}>MAC CHRISTAR LIMITED</span>
                                             </div>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
                                               <span style={{ color: 'var(--gray-1)' }}>Account Number</span>
-                                              <span style={{ fontWeight: 900, fontSize: '15px', color: 'var(--warning)', letterSpacing: '1.5px', fontFamily: 'monospace' }}>0125986348</span>
+                                              <span style={{ fontWeight: 900, fontSize: '15px', color: 'var(--warning)', letterSpacing: '1.5px', fontFamily: 'monospace' }}>1030866721</span>
                                             </div>
                                             <div style={{ marginTop: '4px', fontSize: '11px', color: 'var(--gray-1)', textAlign: 'center', borderTop: '1px solid var(--dark-border)', paddingTop: '6px' }}>
                                               Transfer exactly <strong style={{ color: 'var(--white)' }}>{formatCurrency(order.recurringAmount)}</strong> or your agreed amount, then upload your receipt below.

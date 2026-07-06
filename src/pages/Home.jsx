@@ -290,6 +290,32 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════
+          SHOP BY CATEGORY GRID
+      ══════════════════════════════════════════ */}
+      <div className="ref-container ref-section">
+        <h2 className="ref-section-title">Shop by Category</h2>
+        <div className="ref-cat-grid">
+          {categoryCards.map(cat => (
+            <Link
+              key={cat.q}
+              to={`/shop?q=${cat.q}`}
+              className="ref-cat-card"
+              style={{ backgroundImage: `url(${cat.image})` }}
+              aria-label={`Browse ${cat.label}`}
+            >
+              <div className="ref-cat-card-overlay"></div>
+              <div className="ref-cat-card-content">
+                <h3>{cat.label}</h3>
+                <span className="ref-cat-card-arrow" style={{ color: cat.accent, background: 'rgba(0,0,0,0.5)' }}>
+                  <ArrowUpRight size={20} />
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════
           FEATURED BRANDS BAR
       ══════════════════════════════════════════ */}
       <div className="ref-container">
@@ -316,32 +342,6 @@ export default function Home() {
             ))}
           </div>
         </section>
-      </div>
-
-      {/* ══════════════════════════════════════════
-          SHOP BY CATEGORY GRID
-      ══════════════════════════════════════════ */}
-      <div className="ref-container ref-section">
-        <h2 className="ref-section-title">Shop by Category</h2>
-        <div className="ref-cat-grid">
-          {categoryCards.map(cat => (
-            <Link
-              key={cat.q}
-              to={`/shop?q=${cat.q}`}
-              className="ref-cat-card"
-              style={{ backgroundImage: `url(${cat.image})` }}
-              aria-label={`Browse ${cat.label}`}
-            >
-              <div className="ref-cat-card-overlay"></div>
-              <div className="ref-cat-card-content">
-                <h3>{cat.label}</h3>
-                <span className="ref-cat-card-arrow" style={{ color: cat.accent, background: 'rgba(0,0,0,0.5)' }}>
-                  <ArrowUpRight size={20} />
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
       </div>
 
       {/* ══════════════════════════════════════════
