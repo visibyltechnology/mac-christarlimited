@@ -361,7 +361,7 @@ export default function Checkout() {
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <span style={{ color: 'var(--gray-1)', fontSize: '13px' }}>Account Number</span>
-                          <span style={{ fontWeight: 800, fontSize: '18px',  letterSpacing: '1px' }}>1030866721</span>
+                          <span style={{ fontWeight: 900, fontSize: '28px', letterSpacing: '3px', fontFamily: 'monospace', color: 'var(--primary)' }}>1030866721</span>
                         </div>
                       </div>
 
@@ -438,7 +438,7 @@ export default function Checkout() {
 
                       <div>
                         <label style={{ display: 'block', fontSize: '12px', fontWeight: 700,  marginBottom: '8px' }}>Upload Initial Deposit Receipt <span style={{ color: 'var(--danger)' }}>*</span></label>
-                        <p style={{ fontSize: '12px', color: 'var(--gray-1)', marginBottom: '12px' }}>Please transfer your deposit of <strong>{formatCurrency(depositAmount)}</strong> to UBA (1030866721) - MAC CHRISTAR LIMITED.</p>
+                        <p style={{ fontSize: '12px', color: 'var(--gray-1)', marginBottom: '12px' }}>Please transfer your deposit of <strong>{formatCurrency(depositAmount)}</strong> to UBA — <strong style={{ fontFamily: 'monospace', fontSize: '15px', letterSpacing: '2px', color: 'var(--primary)' }}>1030866721</strong> (MAC CHRISTAR LIMITED).</p>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                           <label style={{ flex: 1, background: 'var(--dark-card)', border: '1.5px dashed var(--dark-border)', padding: '16px', borderRadius: 'var(--radius-sm)', textAlign: 'center', cursor: 'pointer', transition: 'var(--transition)' }}>
                             <Upload size={20} color="var(--primary)" style={{ margin: '0 auto 8px' }} />
