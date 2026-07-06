@@ -248,24 +248,56 @@ export default function Checkout() {
 
   return (
     <main className="main-content" style={{ padding: '28px 20px' }}>
+      {/* Fixed floating cancel button — always on top of Klump's full-screen overlay */}
       {klumpOpen && (
-        <div style={{ textAlign: 'center', marginBottom: '20px', padding: '20px', background: 'var(--dark-card)', borderRadius: 'var(--radius-md)' }}>
-          <p style={{ color: 'var(--warning)', marginBottom: '16px' }}>Klump payment is processing. If the popup didn't appear or you want to cancel, click below.</p>
-          <button 
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 99999,
+          display: 'flex',
+          justifyContent: 'flex-end',
+          padding: '12px 16px',
+          pointerEvents: 'none',
+        }}>
+          <button
             onClick={() => {
+              // Remove all Klump injected iframes/divs
               const klumpDiv = document.getElementById('klump__checkout');
-              if(klumpDiv) klumpDiv.innerHTML = '';
+              if (klumpDiv) klumpDiv.innerHTML = '';
+              // Also try to remove any Klump overlay injected outside our div
+              document.querySelectorAll('[id^="klump"]').forEach(el => {
+                if (el.id !== 'klump__checkout') el.remove();
+              });
+              document.querySelectorAll('iframe[src*="klump"]').forEach(el => el.remove());
               setKlumpOpen(false);
               setLoading(false);
-              setError('Klump payment cancelled by user.');
+              setError('Klump payment cancelled. Please choose another payment method or try again.');
             }}
-            style={{ padding: '12px 24px', background: 'var(--dark)', color: 'var(--white)', border: '1px solid var(--dark-border)', borderRadius: 'var(--radius-sm)', cursor: 'pointer', fontWeight: 600 }}
+            style={{
+              pointerEvents: 'all',
+              background: '#B30000',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '50px',
+              padding: '12px 22px',
+              fontWeight: 800,
+              fontSize: '14px',
+              cursor: 'pointer',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              letterSpacing: '0.03em',
+            }}
           >
-            Cancel Payment
+            ✕ Cancel Payment
           </button>
         </div>
       )}
       <div id="klump__checkout" style={{ display: klumpOpen ? 'block' : 'none' }}></div>
+
       {!klumpOpen && placed ? (
         <div style={{ maxWidth: '600px', margin: '60px auto', textAlign: 'center' }}>
           <div style={{ width: '100px', height: '100px', background: 'rgba(0,230,118,0.1)', border: '3px solid var(--success)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
