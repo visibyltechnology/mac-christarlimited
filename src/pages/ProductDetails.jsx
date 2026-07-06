@@ -233,16 +233,11 @@ export default function ProductDetails() {
           <hr style={{ border: 'none', borderTop: '1px solid var(--dark-border)', margin: 0 }} />
 
           <div style={{ padding: '20px' }}>
-            <h3 style={{ fontSize: '15px', marginBottom: '12px' }}>Select Payment Option</h3>
-            
-            {/* OPTION 1: FULL PAYMENT */}
-            <div style={{ padding: '16px', border: '2px solid var(--primary)', borderRadius: 'var(--radius-sm)', marginBottom: '16px', background: 'rgba(153,0,0,0.02)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <strong style={{ fontSize: '14px', color: 'var(--primary)' }}>Buy & Pay Now</strong>
-                <span style={{ fontSize: '15px', fontWeight: 800 }}>{formatCurrency(product.price)}</span>
-              </div>
-              <div className="pas-qty" style={{ marginBottom: '12px', padding: 0, border: 'none' }}>
-                <span style={{ fontSize: '13px' }}>Quantity</span>
+
+            {/* Quantity + Add to Cart */}
+            <div style={{ marginBottom: '16px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--gray-1)' }}>Quantity</span>
                 <div className="qty-selector">
                   <button onClick={() => setQty(q => Math.max(1, q - 1))}>-</button>
                   <input type="number" value={qty} readOnly />
@@ -257,40 +252,32 @@ export default function ProductDetails() {
               </button>
             </div>
 
-            {/* OPTION 2: KLUMP - BNPL */}
-            <div style={{ padding: '16px', border: '1px solid var(--dark-border)', borderRadius: 'var(--radius-sm)', marginBottom: '16px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                <strong style={{ fontSize: '14px' }}>Buy Now, Pay Later</strong>
-                <span style={{ fontSize: '12px', background: 'var(--black)', padding: '4px 8px', borderRadius: '4px', fontWeight: 700, border: '1px solid var(--dark-border)' }}>Klump</span>
+            {/* Payment Options Info */}
+            <div style={{ background: 'rgba(255,206,30,0.04)', border: '1px solid rgba(255,206,30,0.2)', borderRadius: 'var(--radius-sm)', padding: '14px 16px' }}>
+              <div style={{ fontSize: '12px', fontWeight: 800, color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>
+                💳 Flexible Payment at Checkout
               </div>
-              <p style={{ fontSize: '12px', color: 'var(--gray-1)', marginBottom: '12px', lineHeight: '1.4' }}>Receive your product immediately and pay in 4 interest-free installments.</p>
-              <button className="pas-add-btn" style={{ background: 'var(--black)',  border: '1px solid var(--dark-border)' }} onClick={() => {
-                alert("Klump checkout placeholder. This will trigger the Klump widget.");
-              }}>
-                Pay with Klump
-              </button>
+              <p style={{ fontSize: '12px', color: 'var(--gray-1)', lineHeight: '1.7', marginBottom: '10px' }}>
+                After adding to cart, choose your preferred payment method at checkout:
+              </p>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '7px' }}>
+                {[
+                  { icon: '💰', label: 'Direct Bank Transfer', desc: 'Pay the full amount to our UBA account' },
+                  { icon: '📦', label: 'Installment Plan', desc: 'Weekly or monthly payments, no interest' },
+                  { icon: '⚡', label: 'Klump BNPL', desc: 'Buy now and pay later with Klump' },
+                ].map(opt => (
+                  <li key={opt.label} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '12px' }}>
+                    <span style={{ flexShrink: 0, marginTop: '1px' }}>{opt.icon}</span>
+                    <span><strong style={{ color: 'var(--white)' }}>{opt.label}</strong> — <span style={{ color: 'var(--gray-1)' }}>{opt.desc}</span></span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            {/* OPTION 3: LAYAWAY INSTALLMENT */}
-            <div style={{ padding: '16px', border: '1px solid var(--secondary)', borderRadius: 'var(--radius-sm)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                <strong style={{ fontSize: '14px', color: 'var(--secondary)' }}>Layaway Installment</strong>
-                <span style={{ fontSize: '12px', background: 'rgba(212,175,55,0.1)', color: 'var(--secondary-dark)', padding: '4px 8px', borderRadius: '4px', fontWeight: 700 }}>Mac-Christar Plan</span>
-              </div>
-              <p style={{ fontSize: '12px', color: 'var(--gray-1)', marginBottom: '12px', lineHeight: '1.4' }}>Pay weekly or monthly. Product releases after full payment. No hidden charges.</p>
-              <button className="pas-add-btn" style={{ background: 'var(--secondary)', color: 'var(--black)' }} onClick={() => {
-                const productToAdd = selectedColor ? { ...product, selectedColor } : product;
-                addToCart(productToAdd, qty);
-                navigate('/checkout');
-              }}>
-                Start Installment Plan
-              </button>
-            </div>
-
-            <button 
-              className={`pas-wish-btn ${isInWishlist(product.id) ? 'active' : ''}`} 
-              onClick={() => toggleWishlist(product)} 
-              style={{ marginTop: '16px', width: '100%', color: isInWishlist(product.id) ? 'var(--primary)' : 'inherit', borderColor: isInWishlist(product.id) ? 'var(--primary)' : 'inherit' }}
+            <button
+              className={`pas-wish-btn ${isInWishlist(product.id) ? 'active' : ''}`}
+              onClick={() => toggleWishlist(product)}
+              style={{ marginTop: '14px', width: '100%', color: isInWishlist(product.id) ? 'var(--primary)' : 'inherit', borderColor: isInWishlist(product.id) ? 'var(--primary)' : 'inherit' }}
             >
               <Heart size={18} fill={isInWishlist(product.id) ? 'var(--primary)' : 'none'} /> {isInWishlist(product.id) ? 'Remove from Wishlist' : 'Save for Later'}
             </button>

@@ -238,6 +238,7 @@ export default function Checkout() {
 
   return (
     <main className="main-content" style={{ padding: '28px 20px' }}>
+      <div id="klump__checkout"></div>
       {placed ? (
         <div style={{ maxWidth: '600px', margin: '60px auto', textAlign: 'center' }}>
           <div style={{ width: '100px', height: '100px', background: 'rgba(0,230,118,0.1)', border: '3px solid var(--success)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
