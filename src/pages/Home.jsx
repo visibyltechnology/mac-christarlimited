@@ -178,13 +178,8 @@ export default function Home() {
 
   const categoryCards = [
     { label: 'Smart TVs', q: 'tv', image: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?q=80&w=1000&auto=format&fit=crop', accent: '#4cc9f0' },
-    { label: 'Computing', q: 'laptop', image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1000&auto=format&fit=crop', accent: '#e94560' },
-    { label: 'Smartphones', q: 'smartphone', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1000&auto=format&fit=crop', accent: '#52b788' },
-    { label: 'Power Solutions', q: 'generator', image: 'https://images.unsplash.com/photo-1509391366360-128a3f858eb5?q=80&w=1000&auto=format&fit=crop', accent: '#ffb703' },
-    { label: 'Home Appliances', q: 'appliance', image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=1000&auto=format&fit=crop', accent: '#a8dadc' },
-    { label: 'Gaming', q: 'gaming', image: 'https://images.unsplash.com/photo-1605901309584-818e25960b8f?q=80&w=1000&auto=format&fit=crop', accent: '#c77dff' },
-    { label: 'Audio', q: 'headphone', image: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?q=80&w=1000&auto=format&fit=crop', accent: '#ef233c' },
-    { label: 'Cameras', q: 'camera', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1000&auto=format&fit=crop', accent: '#e43f5a' },
+    { label: 'Generator', q: 'generator', image: 'https://images.unsplash.com/photo-1509391366360-128a3f858eb5?q=80&w=1000&auto=format&fit=crop', accent: '#ffb703' },
+    { label: 'Fridge & Freezer', q: 'fridge', image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=1000&auto=format&fit=crop', accent: '#a8dadc' },
   ];
 
   return (
@@ -194,6 +189,43 @@ export default function Home() {
         description="Buy the latest phones, laptops, TVs and home appliances at Mac-Christar Limited. Flexible installment plans, Buy Now Pay Later, fast nationwide delivery."
         url="/"
       />
+
+      {/* ══════════════════════════════════════════
+          SHOP BY CATEGORY GRID (MOVED TO TOP)
+      ══════════════════════════════════════════ */}
+      <div className="ref-container ref-section">
+        <h2 className="ref-section-title">Shop by Category</h2>
+        <div className="ref-cat-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+          {categoryCards.map(cat => (
+            <Link
+              key={cat.q}
+              to={`/shop?q=${cat.q}`}
+              className="ref-cat-card"
+              style={{ backgroundImage: `url(${cat.image})` }}
+              aria-label={`Browse ${cat.label}`}
+            >
+              <div className="ref-cat-card-overlay"></div>
+              <div className="ref-cat-card-content">
+                <h3>{cat.label}</h3>
+                <span className="ref-cat-card-arrow" style={{ color: cat.accent, background: 'rgba(0,0,0,0.5)' }}>
+                  <ArrowUpRight size={20} />
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════
+          ALL PRODUCTS
+      ══════════════════════════════════════════ */}
+      {data.all.length > 0 && (
+        <div className="ref-container ref-section" style={{ paddingTop: 0 }}>
+          <div className="product-grid">
+            {data.all.map(p => <ProductCard key={p.id} product={p} />)}
+          </div>
+        </div>
+      )}
 
       <section className="mc2-hero" aria-label="Hero">
         {/* Animated background blobs */}
@@ -289,31 +321,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          SHOP BY CATEGORY GRID
-      ══════════════════════════════════════════ */}
-      <div className="ref-container ref-section">
-        <h2 className="ref-section-title">Shop by Category</h2>
-        <div className="ref-cat-grid">
-          {categoryCards.map(cat => (
-            <Link
-              key={cat.q}
-              to={`/shop?q=${cat.q}`}
-              className="ref-cat-card"
-              style={{ backgroundImage: `url(${cat.image})` }}
-              aria-label={`Browse ${cat.label}`}
-            >
-              <div className="ref-cat-card-overlay"></div>
-              <div className="ref-cat-card-content">
-                <h3>{cat.label}</h3>
-                <span className="ref-cat-card-arrow" style={{ color: cat.accent, background: 'rgba(0,0,0,0.5)' }}>
-                  <ArrowUpRight size={20} />
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
+
 
       {/* ══════════════════════════════════════════
           FEATURED BRANDS BAR
@@ -343,68 +351,6 @@ export default function Home() {
           </div>
         </section>
       </div>
-
-      {/* ══════════════════════════════════════════
-          FEATURED BENTO GRID (Electric Plug style)
-      ══════════════════════════════════════════ */}
-      {data.featured.length > 0 && (
-        <div className="ref-container ref-section" style={{ paddingTop: 0 }}>
-          <div className="ref-section-header">
-            <h2 className="ref-section-title">✦ Featured Products</h2>
-            <Link to="/shop?sort=featured" className="ref-see-all">View All <ArrowRight size={14} /></Link>
-          </div>
-          <div className="ep-bento-grid">
-            {/* Big hero tile — first product */}
-            {data.featured[0] && (
-              <Link to={`/product/${data.featured[0].id}`} className="ep-bento-hero">
-                <div className="ep-bento-img-wrap">
-                  {(data.featured[0].imgUrl || data.featured[0].image) ? (
-                    <img src={data.featured[0].imgUrl || data.featured[0].image} alt={data.featured[0].name} className="ep-bento-img" />
-                  ) : (
-                    <div className="ep-bento-img ep-bento-no-img">📱</div>
-                  )}
-                </div>
-                <div className="ep-bento-info">
-                  <span className="ep-bento-tag">🔥 Top Pick</span>
-                  <h3 className="ep-bento-name">{data.featured[0].name}</h3>
-                  <div className="ep-bento-price">₦{(data.featured[0].price || 0).toLocaleString('en-NG')}</div>
-                  <span className="ep-bento-cta">Shop Now →</span>
-                </div>
-              </Link>
-            )}
-
-            {/* Right column — smaller tiles */}
-            <div className="ep-bento-side">
-              {data.featured.slice(1, 4).map((p, i) => (
-                <Link key={p.id} to={`/product/${p.id}`} className="ep-bento-small">
-                  <div className="ep-bento-small-img">
-                    {(p.imgUrl || p.image) ? (
-                      <img src={p.imgUrl || p.image} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    ) : (
-                      <span style={{ fontSize: '28px' }}>{['💻','📺','🎧'][i]}</span>
-                    )}
-                  </div>
-                  <div className="ep-bento-small-info">
-                    <div className="ep-bento-small-name">{p.name}</div>
-                    <div className="ep-bento-small-price">₦{(p.price || 0).toLocaleString('en-NG')}</div>
-                  </div>
-                  <span className="ep-bento-arrow">→</span>
-                </Link>
-              ))}
-
-              {/* Promo tile */}
-              <div className="ep-bento-promo">
-                <div className="ep-bento-promo-icon">⚡</div>
-                <div>
-                  <div className="ep-bento-promo-title">Pay in Installments</div>
-                  <div className="ep-bento-promo-sub">0% interest for 3 months</div>
-                </div>
-                <Link to="/shop" className="ep-bento-promo-btn">Get Started</Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ══════════════════════════════════════════
           FLASH SALES
