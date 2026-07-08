@@ -290,7 +290,7 @@ export default function Checkout() {
               }
             }}
             style={{
-              pointerEvents: 'all',
+              pointerEvents: 'auto',
               background: '#B30000',
               color: '#fff',
               border: 'none',
