@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { CreditCard, MapPin, Truck, ShieldCheck, ChevronRight, CheckCircle, Zap, Upload, AlertCircle, Loader2, X } from 'lucide-react';
 import { useApp } from '../context/AppContext';
@@ -259,7 +260,7 @@ export default function Checkout() {
   return (
     <main className="main-content" style={{ padding: '28px 20px' }}>
       {/* Fixed floating cancel button — always on top of Klump's full-screen overlay */}
-      {klumpOpen && (
+      {klumpOpen && createPortal(
         <div style={{
           position: 'fixed',
           top: 0,
@@ -273,17 +274,20 @@ export default function Checkout() {
         }}>
           <button
             onClick={() => {
-              // Remove all Klump injected iframes/divs
-              const klumpDiv = document.getElementById('klump__checkout');
-              if (klumpDiv) klumpDiv.innerHTML = '';
-              // Also try to remove any Klump overlay injected outside our div
-              document.querySelectorAll('[id^="klump"]').forEach(el => {
-                if (el.id !== 'klump__checkout') el.remove();
-              });
-              document.querySelectorAll('iframe[src*="klump"]').forEach(el => el.remove());
-              setKlumpOpen(false);
-              setLoading(false);
-              setError('Klump payment cancelled. Please choose another payment method or try again.');
+              // Fallback to hard reload if DOM removal fails
+              try {
+                const klumpDiv = document.getElementById('klump__checkout');
+                if (klumpDiv) klumpDiv.innerHTML = '';
+                document.querySelectorAll('[id^="klump"]').forEach(el => {
+                  if (el.id !== 'klump__checkout') el.remove();
+                });
+                document.querySelectorAll('iframe[src*="klump"]').forEach(el => el.remove());
+                setKlumpOpen(false);
+                setLoading(false);
+                setError('Klump payment cancelled. Please choose another payment method or try again.');
+              } catch(e) {
+                window.location.reload();
+              }
             }}
             style={{
               pointerEvents: 'all',
@@ -304,7 +308,8 @@ export default function Checkout() {
           >
             ✕ Cancel Payment
           </button>
-        </div>
+        </div>,
+        document.body
       )}
       <div id="klump__checkout" style={{ display: klumpOpen ? 'block' : 'none' }}></div>
 
