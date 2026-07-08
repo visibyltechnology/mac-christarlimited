@@ -168,7 +168,7 @@ export default function Checkout() {
         publicKey: "klp_pk_4ce49cef6ab247b69abd5a9901c9ec7411d7c3eb98714b8f8e254962e70591c7",
         data: {
           amount: subTotal,
-          shipping_fee: 0,
+          shipping_fee: delivery,
           currency: "NGN",
           redirect_url: `${window.location.origin}/profile`,
           merchant_reference: `klp-${Date.now()}`,
