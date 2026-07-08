@@ -76,6 +76,23 @@ export default function Checkout() {
   const [error, setError] = useState('');
 
   const [klumpOpen, setKlumpOpen] = useState(false);
+
+  useEffect(() => {
+    let interval;
+    if (klumpOpen) {
+      // Force Klump's dynamically injected iframes to have a lower z-index
+      // so our Cancel button (which is 2147483647) is guaranteed to stay on top
+      interval = setInterval(() => {
+        document.querySelectorAll('iframe[src*="klump"], [id^="klump"]').forEach(el => {
+          if (el.style && el.id !== 'klump__checkout') {
+            el.style.setProperty('z-index', '2147483640', 'important');
+          }
+        });
+      }, 500);
+    }
+    return () => clearInterval(interval);
+  }, [klumpOpen]);
+
   const [formData, setFormData] = useState({ 
     fullName: user?.firstName ? `${user.firstName} ${user.lastName || ''}` : '', 
     email: user?.email || '',
