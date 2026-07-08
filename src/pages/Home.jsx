@@ -221,9 +221,10 @@ export default function Home() {
       ══════════════════════════════════════════ */}
       {data.all.length > 0 && (
         <div className="ref-container ref-section" style={{ paddingTop: 0 }}>
-          <div className="product-grid">
-            {data.all.map(p => <ProductCard key={p.id} product={p} />)}
+          <div className="ref-section-header">
+            <h2 className="ref-section-title">All Products</h2>
           </div>
+          <ProductRow products={data.all} />
         </div>
       )}
 
