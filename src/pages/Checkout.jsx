@@ -147,7 +147,7 @@ export default function Checkout() {
       if (!KlumpCtor) throw new Error("Klump payment service unavailable. Check your connection.");
 
       new KlumpCtor({
-        publicKey: import.meta.env.VITE_KLUMP_PUBLIC_KEY || "klp_pk_test_08ba948c602348a09f9f6d924c2292c3f24cc2e7b514412c8c19868305b5820b",
+        publicKey: "klp_pk_4ce49cef6ab247b69abd5a9901c9ec7411d7c3eb98714b8f8e254962e70591c7",
         data: {
           amount: subTotal,
           shipping_fee: 0,
