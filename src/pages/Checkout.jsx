@@ -265,7 +265,7 @@ export default function Checkout() {
           top: 0,
           left: 0,
           right: 0,
-          zIndex: 99999,
+          zIndex: 2147483647,
           display: 'flex',
           justifyContent: 'flex-end',
           padding: '12px 16px',
