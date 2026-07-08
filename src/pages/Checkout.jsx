@@ -4,6 +4,8 @@ import { CreditCard, MapPin, Truck, ShieldCheck, ChevronRight, CheckCircle, Zap,
 import { useApp } from '../context/AppContext';
 import { formatCurrency } from './Home';
 import { uploadImage } from '../utils/cloudinaryService';
+import { db } from '../firebase';
+import { collection, addDoc } from 'firebase/firestore';
 
 const steps = ['Delivery', 'Payment', 'Review'];
 
@@ -138,7 +140,7 @@ export default function Checkout() {
       if (!KlumpCtor) throw new Error("Klump payment service unavailable. Check your connection.");
 
       new KlumpCtor({
-        publicKey: "klp_pk_test_08ba948c602348a09f9f6d924c2292c3f24cc2e7b514412c8c19868305b5820b",
+        publicKey: import.meta.env.VITE_KLUMP_PUBLIC_KEY || "klp_pk_test_08ba948c602348a09f9f6d924c2292c3f24cc2e7b514412c8c19868305b5820b",
         data: {
           amount: subTotal,
           shipping_fee: 0,
@@ -219,9 +221,10 @@ export default function Checkout() {
         klumpReference: klumpRef,
         createdAt: new Date() };
 
-      // Mock database save
-      await new Promise(resolve => setTimeout(resolve, 800));
-      console.log("Mock Order Saved:", orderData);
+      // Save order to Firebase
+      const ordersRef = collection(db, 'orders');
+      await addDoc(ordersRef, orderData);
+      console.log("Order Saved successfully to Firebase:", orderData.klumpReference || orderData.customerName);
       
       setFinalTotal(grandTotal);
       clearCart();
