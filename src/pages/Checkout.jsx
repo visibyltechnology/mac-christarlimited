@@ -239,7 +239,7 @@ export default function Checkout() {
 
   const inputStyle = { width: '100%', background: 'var(--dark)', border: '1.5px solid var(--dark-border)',  padding: '12px 16px', borderRadius: 'var(--radius-sm)', fontSize: '14px' };
 
-  if (authLoading || (!user && !placed)) {
+  if (authLoading) {
     return (
       <main className="main-content" style={{ padding: '28px 20px', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
         <Loader2 className="spinner" size={32} color="var(--primary)" />
