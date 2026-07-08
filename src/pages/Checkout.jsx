@@ -62,6 +62,13 @@ export default function Checkout() {
   const navigate = useNavigate();
 
   const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate('/login?redirect=/checkout');
+    }
+  }, [user, authLoading, navigate]);
+
   const [placed, setPlaced] = useState(false);
   const [finalTotal, setFinalTotal] = useState(0);
   const [loading, setLoading] = useState(false);
