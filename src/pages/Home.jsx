@@ -180,6 +180,12 @@ export default function Home() {
     { label: 'Smart TVs', q: 'tv', image: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?q=80&w=1000&auto=format&fit=crop', accent: '#4cc9f0' },
     { label: 'Generator', q: 'generator', image: 'https://images.unsplash.com/photo-1509391366360-128a3f858eb5?q=80&w=1000&auto=format&fit=crop', accent: '#ffb703' },
     { label: 'Fridge & Freezer', q: 'fridge', image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=1000&auto=format&fit=crop', accent: '#a8dadc' },
+    { label: 'Air Conditioners', q: 'air conditioner', image: 'https://images.unsplash.com/photo-1616422285623-14fb795e59c1?q=80&w=1000&auto=format&fit=crop', accent: '#00bbf9' },
+    { label: 'Audio Bars', q: 'audio', image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?q=80&w=1000&auto=format&fit=crop', accent: '#f15bb5' },
+    { label: 'Microwave Ovens', q: 'microwave', image: 'https://images.unsplash.com/photo-1585659722983-39cb8eca8da3?q=80&w=1000&auto=format&fit=crop', accent: '#fee440' },
+    { label: 'Small Home Appliances', q: 'small appliance', image: 'https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?q=80&w=1000&auto=format&fit=crop', accent: '#9b5de5' },
+    { label: 'Power Solutions', q: 'power', image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=1000&auto=format&fit=crop', accent: '#fb5607' },
+    { label: 'Home Appliances', q: 'appliance', image: 'https://images.unsplash.com/photo-1628151015968-3a4429e9ef04?q=80&w=1000&auto=format&fit=crop', accent: '#3a86ff' },
   ];
 
   return (
