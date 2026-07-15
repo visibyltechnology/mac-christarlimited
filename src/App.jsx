@@ -28,64 +28,11 @@ import AdminCategories from './pages/admin/AdminCategories';
 import AdminBrands from './pages/admin/AdminBrands';
 import AdminSettings from './pages/admin/AdminSettings';
 
-import CustomCursor from './components/CustomCursor';
-
 function PublicLayout({ children }) {
   return (
     <>
-      {/* ══════════════════════════════════════════════════
-          FULL-PAGE ANIMATED BACKGROUND SYSTEM
-      ══════════════════════════════════════════════════ */}
-      <div className="ambient-background" aria-hidden="true">
-        {/* Layer 1: Deep aurora colour wash */}
-        <div className="ab-aurora" />
+      {/* Removed heavy animated background for performance */}
 
-        {/* Layer 2: Moving mesh gradient */}
-        <div className="ab-mesh" />
-
-        {/* Layer 3: Large slow orbs */}
-        <div className="ambient-orb orb-1" />
-        <div className="ambient-orb orb-2" />
-        <div className="ambient-orb orb-3" />
-        <div className="ambient-orb orb-4" />
-        <div className="ambient-orb orb-5" />
-
-        {/* Layer 4: Light beams / scanlines */}
-        <div className="ab-beam ab-beam-1" />
-        <div className="ab-beam ab-beam-2" />
-        <div className="ab-beam ab-beam-3" />
-
-        {/* Layer 5: Floating geometric shapes */}
-        <div className="ab-shape ab-shape-1" />
-        <div className="ab-shape ab-shape-2" />
-        <div className="ab-shape ab-shape-3" />
-        <div className="ab-shape ab-shape-4" />
-        <div className="ab-shape ab-shape-5" />
-        <div className="ab-shape ab-shape-6" />
-
-        {/* Layer 6: Particle dots */}
-        <div className="ab-particles">
-          {Array.from({ length: 30 }).map((_, i) => (
-            <div key={i} className="ab-particle" style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 8}s`,
-              animationDuration: `${6 + Math.random() * 10}s`,
-              width: `${2 + Math.random() * 3}px`,
-              height: `${2 + Math.random() * 3}px`,
-              opacity: 0.2 + Math.random() * 0.5,
-            }} />
-          ))}
-        </div>
-
-        {/* Layer 7: Fine grid */}
-        <div className="ambient-grid" />
-
-        {/* Layer 8: Subtle noise texture */}
-        <div className="ambient-noise" />
-      </div>
-
-      <CustomCursor />
       <Navbar />
       {children}
       <Footer />

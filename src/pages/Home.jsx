@@ -235,12 +235,6 @@ export default function Home() {
       )}
 
       <section className="mc2-hero" aria-label="Hero">
-        {/* Animated background blobs */}
-        <div className="mc2-hero-blob mc2-hero-blob-1" aria-hidden="true" />
-        <div className="mc2-hero-blob mc2-hero-blob-2" aria-hidden="true" />
-        <div className="mc2-hero-blob mc2-hero-blob-3" aria-hidden="true" />
-        <div className="mc2-hero-grid-overlay" aria-hidden="true" />
-
         <div className="mc2-hero-inner">
           {/* LEFT — Text Content */}
           <div className="mc2-hero-content">
@@ -287,8 +281,6 @@ export default function Home() {
 
           {/* RIGHT — Product Visual */}
           <div className="mc2-hero-visual">
-            <div className="mc2-hero-glow-ring" aria-hidden="true" />
-            <div className="mc2-hero-glow-ring mc2-hero-glow-ring-2" aria-hidden="true" />
             <div className="mc2-hero-img-wrap">
               <img
                 src={slide.image || 'https://images.unsplash.com/photo-1546054454-aa26e2b734c7?q=80&w=880&auto=format&fit=crop'}

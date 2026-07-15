@@ -165,8 +165,6 @@ body {
 /* 1. Animated Glow Orbs */
 .ambient-orb {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(120px);
   opacity: 0.5;
   animation: orb-float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform, opacity;
@@ -181,7 +179,7 @@ body {
   height: 60vw;
   top: -20%;
   left: -10%;
-  background: var(--red-glow);
+  background: radial-gradient(circle, var(--red-glow) 0%, transparent 70%);
   animation-delay: 0s;
 }
 
@@ -190,7 +188,7 @@ body {
   height: 50vw;
   bottom: -10%;
   right: -20%;
-  background: var(--gold-glow);
+  background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
   animation-delay: -5s;
 }
 
@@ -199,7 +197,7 @@ body {
   height: 40vw;
   top: 40%;
   left: 40%;
-  background: rgba(160, 0, 0, 0.05);
+  background: radial-gradient(circle, rgba(160, 0, 0, 0.05) 0%, transparent 70%);
   animation-delay: -10s;
 }
 
@@ -218,7 +216,6 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   opacity: 0.04;
   pointer-events: none;
-  mix-blend-mode: overlay;
 }
 
 [data-theme='dark'] .ambient-noise {
@@ -5822,7 +5819,7 @@ a.ref-footer-contact-value:hover { color: var(--brand-gold, #D4AF37); }
 .mc2-hero-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(90px);
+  
   opacity: 0.35;
   pointer-events: none;
   animation: blobFloat 12s ease-in-out infinite alternate;

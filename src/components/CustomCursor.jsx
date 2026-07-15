@@ -1,18 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: -100, y: -100 });
-  const [dotPosition, setDotPosition] = useState({ x: -100, y: -100 });
-  const [hovered, setHovered] = useState(false);
+  const dotRef = useRef(null);
+  const ringRef = useRef(null);
   const [hidden, setHidden] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
     let requestRef;
+    let mouseX = -100;
+    let mouseY = -100;
+    let ringX = -100;
+    let ringY = -100;
 
     const onMouseMove = (e) => {
-      const { clientX: x, clientY: y } = e;
-      setPosition({ x, y });
+      mouseX = e.clientX;
+      mouseY = e.clientY;
       if (hidden) setHidden(false);
+      
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+      }
     };
 
     const onMouseLeave = () => setHidden(true);
@@ -34,20 +42,19 @@ export default function CustomCursor() {
 
     attachHoverEvents();
 
-    // Use MutationObserver to attach to dynamically added elements
     const observer = new MutationObserver(attachHoverEvents);
     observer.observe(document.body, { childList: true, subtree: true });
 
-    // Smooth following for the outer ring
     const loop = () => {
-      setDotPosition(prev => {
-        const dx = position.x - prev.x;
-        const dy = position.y - prev.y;
-        return {
-          x: prev.x + dx * 0.15,
-          y: prev.y + dy * 0.15
-        };
-      });
+      const dx = mouseX - ringX;
+      const dy = mouseY - ringY;
+      ringX += dx * 0.15;
+      ringY += dy * 0.15;
+      
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
+      }
+      
       requestRef = requestAnimationFrame(loop);
     };
     loop();
@@ -63,21 +70,23 @@ export default function CustomCursor() {
         el.removeEventListener('mouseleave', handleHoverEnd);
       });
     };
-  }, [position, hidden]);
+  }, [hidden]); // removed position dependency
 
   if (typeof navigator !== 'undefined' && navigator.userAgent.match(/Android|iPhone|iPad|iPod/i)) {
-    return null; // Disable on touch devices
+    return null;
   }
 
   return (
     <>
       <div 
+        ref={dotRef}
         className={`custom-cursor-dot ${hidden ? 'hidden' : ''} ${hovered ? 'hovered' : ''}`}
-        style={{ transform: `translate3d(${position.x}px, ${position.y}px, 0)` }}
+        style={{ transform: `translate3d(-100px, -100px, 0)` }}
       />
       <div 
+        ref={ringRef}
         className={`custom-cursor-ring ${hidden ? 'hidden' : ''} ${hovered ? 'hovered' : ''}`}
-        style={{ transform: `translate3d(${dotPosition.x}px, ${dotPosition.y}px, 0)` }}
+        style={{ transform: `translate3d(-100px, -100px, 0)` }}
       />
     </>
   );
