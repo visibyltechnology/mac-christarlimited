@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "https://amber-falls-co.vercel.app/$1"
+    }
+  ]
+}
